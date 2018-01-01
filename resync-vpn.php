@@ -3,14 +3,22 @@
 include('/etc/inc/openvpn.inc');
 
 class vpn_resync{
-
+    
+    // List of ips for your vpn
     private $ips            = array('208.167.254.51','104.200.153.75','64.237.52.141',);
+    // OpenVpn Config File
     private $config_file    = '/var/etc/openvpn/client1.conf';
+    // Ping Command
     private $ping_command   = 'ping -c 3 8.8.8.8';//4.2.2.2
+    // Used to store the current ip found in the config file.
     private $curr_ip        = '';
+    // 
     private $curr_port      = '1198';
+    // Set the new ip to a default in hopes to always have something to fall back on.
     private $new_ip         = '208.167.254.51';
-    private $config         = FALSE;
+    
+    private $config         = '';
+    
     private $pattern        = '/(remote)/';
 
     public function update(){
@@ -167,7 +175,7 @@ class vpn_resync{
         $config[$line_number] = 'remote '.$this->new_ip.' '.$this->curr_port."\n";
         $this->config = $config;
 
-        if($this->config !== FALSE && is_array($this->config)){
+        if($this->config !== '' && is_array($this->config)){
           $response = TRUE;
           echo 'Config Data Set...'."\n";
         }
