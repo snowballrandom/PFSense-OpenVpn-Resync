@@ -81,8 +81,13 @@ class vpn_resync{
 
         $shell = shell_exec($this->ping_command);
 
-        if($shell !== null){
-
+        if($shell !== null){            
+            
+            // Display the loss of packets
+            $start = strpos($shell, '%');
+            $percent = substr($shell, $start-4, 17);
+            echo $percent."\n";
+            
             $pos = strpos($shell, '100%');
 
             if($pos === TRUE){
